@@ -1,19 +1,23 @@
 <template>
   <div id="app">
-    <div id="nav">
+    <!-- <div id="nav">
       <router-link to="/">Home</router-link> |
       <router-link to="/about">About</router-link>
-    </div>
+    </div> -->
     <router-view/>
   </div>
 </template>
 
 <style>
+@font-face {
+  font-family: 'inter';
+  src:  url('./assets/font/Inter-Regular.ttf');
+}
 #app {
-  font-family: 'Avenir', Helvetica, Arial, sans-serif;
+  font-family: 'inter';
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  text-align: center;
+  /* text-align: center; */
   color: #2c3e50;
 }
 
@@ -28,5 +32,14 @@
 
 #nav a.router-link-exact-active {
   color: #42b983;
+}
+
+#app{
+  overflow-x:hidden
+}
+
+body{
+  margin: 0;
+  /* background: #ecf0f1; */
 }
 </style>

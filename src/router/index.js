@@ -1,10 +1,11 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import Home from '../views/Home.vue'
+import { default as mutuRoutes } from '../modules/mutu/routes';
 
 Vue.use(VueRouter)
 
-const routes = [
+const appRoutes = [
   {
     path: '/',
     name: 'home',
@@ -19,6 +20,7 @@ const routes = [
     component: () => import(/* webpackChunkName: "about" */ '../views/About.vue')
   }
 ]
+const routes = [...mutuRoutes, ...appRoutes];
 
 const router = new VueRouter({
   mode: 'history',
