@@ -8,8 +8,9 @@ import store from './store'
 import { library } from '@fortawesome/fontawesome-svg-core'
 import { faUser,faUserMd, faUserNurse, faAddressCard } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
+import locale from 'element-ui/lib/locale/lang/en'
 
-Vue.use(ElementUI);
+Vue.use(ElementUI, { locale })
 
 library.add(faUser, faUserMd, faUserNurse, faAddressCard)
  

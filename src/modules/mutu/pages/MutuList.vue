@@ -45,7 +45,7 @@
               >
               <template >
                 <router-link :to="{ name: 'detail', params: { id: 1212 }}">
-                  <el-button icon="el-icon-search" type="success" round>Detail</el-button>
+                  <el-button size="small" icon="el-icon-search" type="success" round>Detail</el-button>
                 </router-link>
               </template>
             </el-table-column>

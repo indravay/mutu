@@ -2,6 +2,7 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 import Home from '../views/Home.vue'
 import { default as mutuRoutes } from '../modules/mutu/routes';
+import { default as setupRoutes } from '../modules/setup/routes';
 
 Vue.use(VueRouter)
 
@@ -20,7 +21,7 @@ const appRoutes = [
     component: () => import(/* webpackChunkName: "about" */ '../views/About.vue')
   }
 ]
-const routes = [...mutuRoutes, ...appRoutes];
+const routes = [...mutuRoutes, ...setupRoutes, ...appRoutes];
 
 const router = new VueRouter({
   mode: 'history',

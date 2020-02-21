@@ -1,6 +1,6 @@
-import Home from '../pages/mutu-home.vue';
-import List from '../pages/mutu-list.vue';
-import Detail from '../pages/mutu-detail.vue';
+import Home from '../pages/MutuHome.vue';
+import List from '../pages/MutuList.vue';
+import Detail from '../pages/MutuDetail.vue';
 
 const mutuRoutes = [
   {
@@ -19,6 +19,7 @@ const mutuRoutes = [
       },
       {
         path: '',
+        name: 'mutu',
         redirect: { name: 'mutu-list' }
       }
     ]

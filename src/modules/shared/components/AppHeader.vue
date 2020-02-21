@@ -1,6 +1,16 @@
 <template>
  <div class="header">
-    <span class="title"><span>SI</span>IMUT</span>
+    <router-link :to="{ name: 'setup'}">
+      <div class="setup-wrapper" style="left:20">
+        <el-menu class="el-menu-demo" mode="horizontal">
+          <el-menu-item index="2">
+            <template slot="title"><i class="el-icon-setting" /> Setup</template>
+            
+          </el-menu-item>
+        </el-menu>
+      </div>
+    </router-link>
+    <router-link :to="{ name: 'mutu'}"> <span class="title"><span>SI</span>IMUT</span> </router-link>
     <div class="menu-wrapper">
       <el-menu class="el-menu-demo" mode="horizontal">
         <el-submenu index="2">
@@ -15,10 +25,21 @@
   
 </template>
 <style scoped>
+a:-webkit-any-link {
+  text-decoration: none
+}
 .menu-wrapper{
   position:absolute;
-  top:20px;
+  top:15px;
   right:20px;
+  border:1px solid #ddd;
+  border-radius:20px;
+  padding:0 20px;
+}
+.setup-wrapper{
+  position:absolute;
+  top:15px;
+  left:20px;
   border:1px solid #ddd;
   border-radius:20px;
   padding:0 20px;
@@ -33,6 +54,9 @@
 
 .user-menu svg, .el-submenu__title svg {
   margin-right:5px;
+}
+.el-menu--horizontal>.el-menu-item.is-active {
+  border:none;
 }
 .header{
   width:calc(100vw - 40px);
@@ -58,7 +82,7 @@
     border:0;
   }
 
-  .el-menu--horizontal>.el-submenu .el-submenu__title{
+  .el-menu--horizontal>.el-submenu .el-submenu__title, .el-menu--horizontal>.el-menu-item{
     padding:0;
     height:40px;
     line-height:40px;
@@ -66,6 +90,11 @@
 
   .el-menu-item{
     font-family:inter;
+  }
+
+  .el-menu-item .el-icon-setting{
+    height:20px;
+    width:20px;
   }
 </style>
 
