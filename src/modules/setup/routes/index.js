@@ -6,6 +6,7 @@ const setupRoutes = [
   {
     path: '/setup',
     component: Home,
+    meta: { requiresAuth: true },
     children: [
       {
         path: 'setting',

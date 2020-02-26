@@ -13,6 +13,14 @@
   font-family: 'inter';
   src:  url('./assets/font/Inter-Regular.ttf');
 }
+
+.help.is-danger{
+  color:#F56C6C;
+  margin:5px 0;
+  line-height:20px;
+  font-size:12px;
+}
+
 #app {
   font-family: 'inter';
   -webkit-font-smoothing: antialiased;

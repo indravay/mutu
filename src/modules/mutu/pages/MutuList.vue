@@ -4,14 +4,26 @@
       <el-row type="flex" class="row-bg" justify="center">
         <el-col :span="20" >
           <el-col :span="24" class="header-title">
-            <el-col :span="12">
-              <p class="title"><b >LIST DATA</b></p>
+            <el-col :span="10">
+              <p class="title"><b >LIST DATA </b></p>
               <span class="sub-title">Terakhir diupdate : 20 Februari 2020, 20:00</span>
             </el-col>
+            
+            <el-button style="float:right" type="primary" icon="el-icon-refresh" >Refresh Data</el-button>
+            
+          </el-col>
+          <el-col :span="24" >
+            <el-date-picker
+              style="float:right"
+              v-model="date"
+              type="daterange"
+              range-separator="To"
+              start-placeholder="Start date"
+              end-placeholder="End date">
+            </el-date-picker>
             <el-input class="search-input" placeholder="Cari berdasarkan NRM/Nama pasien">
               <i slot="prefix" class="el-input__icon el-icon-search"></i>
             </el-input>
-            <el-button style="float:right" type="primary" icon="el-icon-refresh" circle></el-button>
           </el-col>
           <el-table
             :data="tableData"
@@ -98,6 +110,10 @@
 .el-button.is-round{
   padding:10px 25px;
 }
+
+.el-picker-panel__body{
+  font-family:Inter
+}
 </style>
 <script>
   export default {
@@ -108,6 +124,7 @@
     },
     data() {
       return {
+        date:'',
         tableData: [{
           date: '2016-05-03',
           name: 'Tom',

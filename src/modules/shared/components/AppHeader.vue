@@ -10,20 +10,60 @@
         </el-menu>
       </div>
     </router-link>
+    <router-link :to="{ name: 'user-list'}">
+      <div class="setup-wrapper1" style="left:220">
+        <el-menu class="el-menu-demo" mode="horizontal">
+          <el-menu-item index="1">
+            <template slot="title"><i class="el-icon-user" /> User</template>
+            
+          </el-menu-item>
+        </el-menu>
+      </div>
+    </router-link>
     <router-link :to="{ name: 'mutu'}"> <span class="title"><span>SI</span>IMUT</span> </router-link>
     <div class="menu-wrapper">
       <el-menu class="el-menu-demo" mode="horizontal">
         <el-submenu index="2">
           <template slot="title"><font-awesome-icon icon="user" /> Indra Rudyarta</template>
-          <el-menu-item index="2-1">Profile</el-menu-item>
-          <el-menu-item index="2-2">Logout</el-menu-item>
+          <el-menu-item index="2-1" @click="modalProfile = true">Akun</el-menu-item>
+          <el-menu-item index="2-2" @click="logoutConfirm">Logout</el-menu-item>
         </el-submenu>
       </el-menu>
     </div>
-    
+    <el-dialog title="Pengaturan Akun" :visible.sync="modalProfile">
+      <profile-modal/>
+    </el-dialog>
   </div>  
   
 </template>
+<script>
+import { mapActions, mapMutations, mapState } from 'vuex' 
+import ProfileModal from '../../user/components/ProfileModal'
+export default {
+  components:{
+    ProfileModal
+  },
+  data(){
+    return {
+      modalProfile : false
+    }
+  },
+  methods:{
+    ...mapActions('auth',['logout']),
+    logoutConfirm(){
+      this.$confirm('Apakah anda yakin ingin keluar?', 'Logout', {
+        confirmButtonText: 'OK',
+        cancelButtonText: 'Cancel',
+        type: 'info'
+      }).then(() => {
+        this.logout().then(() =>{
+          this.$router.push('/mutu')
+        })
+      })
+    }
+  }
+}
+</script>
 <style scoped>
 a:-webkit-any-link {
   text-decoration: none
@@ -40,6 +80,15 @@ a:-webkit-any-link {
   position:absolute;
   top:15px;
   left:20px;
+  border:1px solid #ddd;
+  border-radius:20px;
+  padding:0 20px;
+}
+
+.setup-wrapper1{
+  position:absolute;
+  top:15px;
+  left:140px;
   border:1px solid #ddd;
   border-radius:20px;
   padding:0 20px;

@@ -1,5 +1,9 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
+import auth from './auth/index.js'
+import user from './user/index.js'
+import obat from './obat/index.js'
+import setting from './setting/index.js'
 
 Vue.use(Vuex)
 
@@ -7,7 +11,13 @@ export default new Vuex.Store({
   state: {
     errors: [],
     info: '',
+    token: localStorage.getItem('token'),
     isDownload: false,
+  },
+  getters: {
+    isAuth: state => {
+        return state.token != "null" && state.token != null
+    }
   },
   mutations: {
     SET_ERRORS(state, payload) {
@@ -15,6 +25,9 @@ export default new Vuex.Store({
     },
     SET_INFO(state, payload) {
         state.info = payload
+    },
+    SET_TOKEN(state, payload) {
+      state.token = payload
     },
     CLEAR_ERRORS(state) {
         state.errors = []
@@ -27,6 +40,9 @@ export default new Vuex.Store({
     
   },
   modules: {
-  
+    auth,
+    user,
+    obat,
+    setting
   }
 })
