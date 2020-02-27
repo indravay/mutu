@@ -12,7 +12,7 @@ const appRoutes = [
   {
     path: '/',
     name: 'home',
-    component: Home
+    redirect: { name: 'mutu-list' }
   },
   {
     path: '/about',

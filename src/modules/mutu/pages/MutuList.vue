@@ -21,32 +21,35 @@
               start-placeholder="Start date"
               end-placeholder="End date">
             </el-date-picker>
-            <el-input class="search-input" placeholder="Cari berdasarkan NRM/Nama pasien">
+            <el-input class="search-input" v-on:keyup.native.enter="getData()" v-model="search" placeholder="Cari berdasarkan NRM/Nama pasien">
               <i slot="prefix" class="el-input__icon el-icon-search"></i>
             </el-input>
           </el-col>
           <el-table
-            :data="tableData"
+            :data="data"
+            v-loading="isLoading"
             border
             style="width: 100%">
             <el-table-column
-              
-              prop="date"
+              prop="tgl_masuk"
               label="Tanggal"
+              width="150">
+              <template slot-scope="scope">
+                {{$options.filters.indoDate(scope.row.tgl_masuk)}}
+              </template>
+            </el-table-column>
+            <el-table-column
+              prop="noreg"
+              label="No Registrasi"
               width="150">
             </el-table-column>
             <el-table-column
-              prop="name"
-              label="No Registrasi"
-              width="120">
-            </el-table-column>
-            <el-table-column
-              prop="state"
+              prop="nrm"
               label="NRM"
               width="120">
             </el-table-column>
             <el-table-column
-              prop="city"
+              prop="nama_pasien"
               label="Nama Pasien"
               >
             </el-table-column>
@@ -55,9 +58,9 @@
               label="Aksi"
               width="150"
               >
-              <template >
-                <router-link :to="{ name: 'detail', params: { id: 1212 }}">
-                  <el-button size="small" icon="el-icon-search" type="success" round>Detail</el-button>
+              <template slot-scope="scope">
+                <router-link :to="{ name: 'detail', params: { id: scope.row.noreg }}">
+                  <el-button size="mini" icon="el-icon-search" type="success" round>Detail</el-button>
                 </router-link>
               </template>
             </el-table-column>
@@ -67,12 +70,70 @@
     </el-main>
   </el-container>
 </template>
+
+<script>
+  import moment from 'moment'
+  import { mapActions, mapMutations, mapState } from 'vuex'
+  export default {
+    methods: {
+      handleClick() {
+        console.log('click');
+      }
+    },
+    mounted(){
+      this.$store.dispatch('mutu/getListRegistrasi',{date_start:'',date_end:'',search:'',page:1}).then(() =>{
+          this.isLoading = false
+      })
+    },
+    computed:{
+      ...mapState(['errors','info']),
+      ...mapState('mutu',['data','page','perPage','totalData']),
+      ...mapState('auth',['currentUser','isLoggedIn']),
+    },
+    watch:{
+      date: function(newData, oldData){
+        this.date_start = moment(newData[0]).format('YYYY-MM-DD')
+        this.date_end = moment(newData[1]).format('YYYY-MM-DD')
+        this.getData(1)
+      }
+        
+    },
+    data() {
+      return {
+        date:'',
+        date_start:'',
+        date_end:'',
+        isLoading:true,
+        search:'',
+      }
+    },
+    methods:{
+      ...mapMutations(['CLEAR_ERRORS']),
+      ...mapActions('mutu',['getListRegistrasi']),
+      showPage(el){
+        this.current = el
+        this.getData(el)
+      },
+      getData(page=this.current){
+        console.log('get')
+        this.isLoading = true
+        this.getListRegistrasi({date_start:this.date_start,date_end:this.date_end,search:this.search,page:page}).then(() =>{
+            this.isLoading = false
+        })
+      }
+      
+    }
+  }
+</script>
+
 <style scoped>
   .title{
     font-size:25px;
     margin:0;
     /* float:left; */
   }
+
+
 
   .title p{
     margin:0;
@@ -103,6 +164,9 @@
   }
 </style>
 <style>
+  .el-table tr td{
+    font-size:12px;
+  }
 .el-table td{
   padding:5px 0 ;
 }
@@ -115,50 +179,3 @@
   font-family:Inter
 }
 </style>
-<script>
-  export default {
-    methods: {
-      handleClick() {
-        console.log('click');
-      }
-    },
-    data() {
-      return {
-        date:'',
-        tableData: [{
-          date: '2016-05-03',
-          name: 'Tom',
-          state: 'California',
-          city: 'Los Angeles',
-          address: 'No. 189, Grove St, Los Angeles',
-          zip: 'CA 90036',
-          tag: 'Home'
-        }, {
-          date: '2016-05-02',
-          name: 'Tom',
-          state: 'California',
-          city: 'Los Angeles',
-          address: 'No. 189, Grove St, Los Angeles',
-          zip: 'CA 90036',
-          tag: 'Office'
-        }, {
-          date: '2016-05-04',
-          name: 'Tom',
-          state: 'California',
-          city: 'Los Angeles',
-          address: 'No. 189, Grove St, Los Angeles',
-          zip: 'CA 90036',
-          tag: 'Home'
-        }, {
-          date: '2016-05-01',
-          name: 'Tom',
-          state: 'California',
-          city: 'Los Angeles',
-          address: 'No. 189, Grove St, Los Angeles',
-          zip: 'CA 90036',
-          tag: 'Office'
-        }]
-      }
-    }
-  }
-</script>

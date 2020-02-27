@@ -4,6 +4,7 @@ import auth from './auth/index.js'
 import user from './user/index.js'
 import obat from './obat/index.js'
 import setting from './setting/index.js'
+import mutu from './mutu/index.js'
 
 Vue.use(Vuex)
 
@@ -43,6 +44,7 @@ export default new Vuex.Store({
     auth,
     user,
     obat,
-    setting
+    setting,
+    mutu
   }
 })

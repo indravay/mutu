@@ -11,6 +11,7 @@ import { faUser,faUserMd, faUserNurse, faAddressCard } from '@fortawesome/free-s
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 import locale from 'element-ui/lib/locale/lang/en'
 import 'izitoast/dist/css/iziToast.min.css';
+import './common/filter'
 
 Vue.use(ElementUI, { locale })
 Vue.use(VueIziToast);

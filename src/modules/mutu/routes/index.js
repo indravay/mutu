@@ -15,7 +15,8 @@ const mutuRoutes = [
       {
         path: 'detail/:id',
         name: 'detail',
-        component: Detail
+        component: Detail,
+        props: true
       },
       {
         path: '',
