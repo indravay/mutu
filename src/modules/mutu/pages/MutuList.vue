@@ -9,7 +9,13 @@
               <span class="sub-title">Terakhir diupdate : 20 Februari 2020, 20:00</span>
             </el-col>
             
-            <el-button style="float:right" type="primary" icon="el-icon-refresh" >Refresh Data</el-button>
+            <el-button 
+              style="float:right" 
+              @click="confirmLoadSanata"
+              type="primary" icon="el-icon-refresh" 
+            >
+              Refresh Data
+            </el-button>
             
           </el-col>
           <el-col :span="24" >
@@ -21,7 +27,7 @@
               start-placeholder="Start date"
               end-placeholder="End date">
             </el-date-picker>
-            <el-input class="search-input" v-on:keyup.native.enter="getData()" v-model="search" placeholder="Cari berdasarkan NRM/Nama pasien">
+            <el-input class="search-input" v-on:keyup.native.enter="getData(1)" v-model="search" placeholder="Cari berdasarkan NRM/Nama pasien">
               <i slot="prefix" class="el-input__icon el-icon-search"></i>
             </el-input>
           </el-col>
@@ -65,6 +71,12 @@
               </template>
             </el-table-column>
           </el-table>
+          <el-pagination
+            layout="prev, pager, next"
+            :page-size="perPage"
+            @current-change='showPage'
+            :total="totalData">
+          </el-pagination>
         </el-col>
       </el-row>
     </el-main>
@@ -105,23 +117,51 @@
         date_end:'',
         isLoading:true,
         search:'',
+        sanataLoading: '',
       }
     },
     methods:{
       ...mapMutations(['CLEAR_ERRORS']),
-      ...mapActions('mutu',['getListRegistrasi']),
+      ...mapActions('mutu',['getListRegistrasi','getListRegistrasiFromSanata']),
       showPage(el){
         this.current = el
         this.getData(el)
       },
       getData(page=this.current){
-        console.log('get')
         this.isLoading = true
         this.getListRegistrasi({date_start:this.date_start,date_end:this.date_end,search:this.search,page:page}).then(() =>{
             this.isLoading = false
         })
+      },
+      confirmLoadSanata(){
+        if(this.date_start != this.date_end){
+          this.$confirm('Apakah anda yakin ingin mengambil data lebih dari 1 hari?  terdapat kemungkinan proses berjalan lama', 'Load data sanata', {
+            confirmButtonText: 'OK',
+            cancelButtonText: 'Cancel',
+            type: 'info'
+          }).then((response) => {
+            this.loadSanata()
+          }).catch((error) => {   
+          });
+        }else{
+          this.loadSanata()
+        }
+        
+      },
+      loadSanata() {
+        this.sanataLoading = this.$loading({
+          lock: true,
+          text: 'Import Data Sanata...',
+        })
+        this.getListRegistrasiFromSanata({date_start:this.date_start,date_end:this.date_end}).then((response) => {
+          this.sanataLoading.close();
+          this.$toast.success(response, 'Berhasil')
+          this.getData(1)
+        }).catch((err) => {
+            this.sanataLoading.close();
+            this.toast.error(err, 'Gagal')
+        })
       }
-      
     }
   }
 </script>
@@ -132,7 +172,6 @@
     margin:0;
     /* float:left; */
   }
-
 
 
   .title p{
@@ -167,15 +206,22 @@
   .el-table tr td{
     font-size:12px;
   }
-.el-table td{
-  padding:5px 0 ;
-}
+  
+  .el-loading-spinner .el-loading-text{
+    font-size:20px;
+    margin-top:25px;
+    font-family:Inter;
+  }
 
-.el-button.is-round{
-  padding:10px 25px;
-}
+  .el-table td{
+    padding:5px 0 ;
+  }
 
-.el-picker-panel__body{
-  font-family:Inter
-}
+  .el-button.is-round{
+    padding:10px 25px;
+  }
+
+  .el-picker-panel__body{
+    font-family:Inter
+  }
 </style>

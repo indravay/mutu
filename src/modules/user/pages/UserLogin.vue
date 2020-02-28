@@ -15,7 +15,7 @@
               <el-input v-model="form.username"></el-input>
             </el-form-item>
             <el-form-item label="Password" class="custom-labels">
-              <el-input v-model="form.password" show-password></el-input>
+              <el-input v-model="form.password" show-password v-on:keyup.native.enter="onSubmit"></el-input>
             </el-form-item>
             <div style="margin-top:20px;overflow:hidden">
               <el-button :loading="loadingButton" type="primary"  v-on:keyup.native.enter="onSubmit" style="float:right" size="small" @click="onSubmit"><i class="el-icon-check"/> Login</el-button>

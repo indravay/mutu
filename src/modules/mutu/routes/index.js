@@ -6,6 +6,7 @@ const mutuRoutes = [
   {
     path: '/mutu',
     component: Home,
+    meta: { requiresAuth: true },
     children: [
       {
         path: 'list',

@@ -13,6 +13,16 @@ const actions = {
     })
   },
 
+  getListRegistrasiFromSanata({ commit }, payload) {
+    return new Promise((resolve, reject) => {
+      $axios.get(`sanata?date_start=${payload.date_start}&date_end=${payload.date_end}`).then((res) => {
+        resolve(res.data.info)
+      }).catch((error) => {
+        commit('SET_ERRORS',error.response.data, {root:true})
+      })
+    })
+  },
+
   getRegistrasiByID({commit}, payload){
     return new Promise((resolve, reject) => {
       $axios.get(`registrasi/${payload.noreg}`).then((res) => {
