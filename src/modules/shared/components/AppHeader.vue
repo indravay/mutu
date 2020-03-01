@@ -24,7 +24,7 @@
     <div class="menu-wrapper">
       <el-menu class="el-menu-demo" mode="horizontal">
         <el-submenu index="2">
-          <template slot="title"><font-awesome-icon icon="user" /> Indra Rudyarta</template>
+          <template slot="title"><font-awesome-icon icon="user" /> {{currentUser.nama}}</template>
           <el-menu-item index="2-1" @click="modalProfile = true">Akun</el-menu-item>
           <el-menu-item index="2-2" @click="logoutConfirm">Logout</el-menu-item>
         </el-submenu>
@@ -48,6 +48,10 @@ export default {
       modalProfile : false
     }
   },
+  computed:{
+    ...mapState(['errors','info']),
+    ...mapState('auth',['currentUser','isLoggedIn']),
+  },
   methods:{
     ...mapActions('auth',['logout']),
     logoutConfirm(){
@@ -57,7 +61,7 @@ export default {
         type: 'info'
       }).then(() => {
         this.logout().then(() =>{
-          this.$router.push('/mutu')
+          this.$router.push('/user/login')
         })
       })
     }

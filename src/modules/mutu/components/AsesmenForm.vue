@@ -8,10 +8,10 @@
           >
         </el-switch>
       </el-form-item>
-      <el-form-item label="Keseuaian : ">
+      <el-form-item label="Kelengkapan : ">
         <el-switch
-          v-model="form.sesuai"
-          active-text="Sesuai"
+          v-model="form.lengkap"
+          active-text="Lengkap"
           >
         </el-switch>
       </el-form-item>
@@ -35,13 +35,13 @@
 <script>
 import { mapActions, mapMutations, mapState } from 'vuex'
 export default {
-  props: ['type','id'],
+  props: ['id'],
   mounted(){
     this.loadingForm = true
-    this.$store.dispatch('mutu/getDataForm',{type:this.type, noreg:this.id}).then((res) =>{
+    this.$store.dispatch('mutu/getDataForm',{type:'asesmen_anastesi', noreg:this.id}).then((res) =>{
       if(res.data != null){
         this.form.dikerjakan = !!res.data.dikerjakan
-        this.form.sesuai = !!res.data.sesuai
+        this.form.lengkap = !!res.data.lengkap
         this.form.note = res.data.note
       }
       this.loadingForm = false
@@ -51,7 +51,7 @@ export default {
     return {
       form: {
         dikerjakan:false,
-        sesuai:false,
+        lengkap:false,
         note:''
       },
       loadingButton:false,
@@ -68,11 +68,11 @@ export default {
     submitProcess(){
       this.loadingButton = true
       this.CLEAR_ERRORS()
-      this.updateMutu({type:this.type, noreg:this.id, form:this.form}).then((response) =>{
+      this.updateMutu({type:'asesmen_anastesi', noreg:this.id, form:this.form}).then((response) =>{
           this.loadingButton = false;
           this.$toast.success(response, 'Berhasil')
-          console.log(this.type)
-          this.$emit('setStatus',this.type)
+          console.log('asesmen_anastesi')
+          this.$emit('setStatus','asesmen_anastesi')
       }).catch((err) => {
           this.loadingButton = false
           this.toast.error(err, 'Gagal')

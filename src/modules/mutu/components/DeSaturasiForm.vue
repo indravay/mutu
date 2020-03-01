@@ -1,6 +1,6 @@
 <template>
   <div>
-    <el-form ref="form" :model="form" label-width="120px">
+    <el-form ref="form" :model="form" label-width="120px" v-loading="loadingForm">
       <el-form-item label="Desaturasi : ">
         <el-switch
           v-model="form.kejadian"
@@ -16,8 +16,8 @@
         </el-input>
       </el-form-item>
       <el-form-item>
-        <el-button type="primary" size="small"><i class="el-icon-check"/> Simpan</el-button>
-        <el-button type="danger" size="small"><i class="el-icon-close"/> Reset</el-button>
+        <el-button :loading="loadingButton" type="primary" @click='submitProcess' size="small"><i class="el-icon-check"/> Simpan</el-button>
+        <!-- <el-button type="danger" size="small"><i class="el-icon-close"/> Reset</el-button> -->
       </el-form-item>
     </el-form>
     <br>
@@ -25,15 +25,55 @@
   </div>
 </template>
 <script>
+import { mapActions, mapMutations, mapState } from 'vuex'
 export default {
-  props: ['types'],
-   data() {
-      return {
-        form: {
-          kejadian:false,
-          note:''
+  props: ['id'],
+  mounted(){
+    this.loadingForm = true
+    this.$store.dispatch('mutu/getDataForm',{type:'desaturasi', noreg:this.id}).then((res) =>{
+      if(res.data != null){
+        this.form.kejadian = !!res.data.kejadian
+        this.form.note = res.data.note
+      }
+      this.loadingForm = false
+    })
+  },
+  data() {
+    return {
+      form: {
+        kejadian:false,
+        note:''
+      },
+      loadingButton:false,
+      loadingForm:false
+    }
+  },
+  computed:{
+    ...mapState(['errors','info']),
+    ...mapState('auth',['currentUser','isLoggedIn']),
+  },
+  methods:{
+    ...mapActions('mutu',['updateMutu']),
+    ...mapMutations(['CLEAR_ERRORS']),
+    submitProcess(){
+      this.loadingButton = true
+      this.CLEAR_ERRORS()
+      this.updateMutu({type:'desaturasi', noreg:this.id, form:this.form}).then((response) =>{
+          this.loadingButton = false;
+          this.$toast.success(response, 'Berhasil')
+          this.$emit('setStatus','desaturasi')
+      }).catch((err) => {
+          this.loadingButton = false
+          this.toast.error(err, 'Gagal')
+      })
+    },
+    clearForm(){
+      for (var key in this.form) {
+        if (this.form.hasOwnProperty(key)) {
+            this.form[key] = ''
         }
       }
-   }
+    },
+  },
 }
 </script>

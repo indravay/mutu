@@ -11,11 +11,13 @@ const setupRoutes = [
       {
         path: 'setting',
         name: 'setting',
+        meta: { requiresAuth: true },
         component: Setting
       },
       {
         path: 'obat',
         name: 'obat',
+        meta: { requiresAuth: true },
         component: Obat
       },
       {

@@ -39,7 +39,6 @@ export default {
             this.toast.error(err, 'Gagal')
         })
       }else{
-        console.log(this.form)
         this.updateObat({form:this.form}).then((response) =>{
             this.loadingButton = false;
             this.$toast.success(response, 'Berhasil')

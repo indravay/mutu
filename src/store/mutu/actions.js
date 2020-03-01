@@ -8,7 +8,8 @@ const actions = {
         commit(type.GET_DATA, res.data)
         resolve(true)
       }).catch((error) => {
-        commit('SET_ERRORS',error.response.data, {root:true})
+        // commit('SET_ERRORS',error.response.data, {root:true})
+        console.log(error)
       })
     })
   },
@@ -23,6 +24,16 @@ const actions = {
     })
   },
 
+  getDataForm({commit}, payload){
+    return new Promise((resolve, reject) => {
+      $axios.get(`mutu/${payload.type}/${payload.noreg}`).then((res) => {
+        resolve(res.data)
+      }).catch((error) => {
+        reject(true)
+      })
+    })
+  },
+
   getRegistrasiByID({commit}, payload){
     return new Promise((resolve, reject) => {
       $axios.get(`registrasi/${payload.noreg}`).then((res) => {
@@ -31,7 +42,19 @@ const actions = {
         reject(true)
       })
     })
-  }
+  },
+
+  updateMutu({ commit }, payload){
+    return new Promise((resolve, reject) => {
+      $axios.post(`mutu/${payload.type}/${payload.noreg}`, payload.form).then((res) => {
+        resolve(res.data.info)
+      }).catch((error) => {
+        commit('SET_ERRORS',error.response.data.error, {root:true})
+        reject(error.response.data.info)
+      })
+    })
+  },
+  
   
 }
 

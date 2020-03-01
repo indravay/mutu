@@ -32,6 +32,7 @@ $axios.interceptors.response.use(null, (error) => {
   else if (error.response.status == 401) {
     store.commit('auth/USER_LOGOUT')
     store.commit('SET_ERRORS',{'expired' : 'Sesi anda telah berakhir'})
+    console.log(router.currentRoute)
     if(router.currentRoute.meta.requiresAuth){
       router.push({ name: 'user-login' })
     }

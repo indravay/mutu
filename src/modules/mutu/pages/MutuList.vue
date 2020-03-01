@@ -1,4 +1,5 @@
 <template>
+  
   <el-container>
     <el-main>
       <el-row type="flex" class="row-bg" justify="center">
@@ -6,7 +7,7 @@
           <el-col :span="24" class="header-title">
             <el-col :span="10">
               <p class="title"><b >LIST DATA </b></p>
-              <span class="sub-title">Terakhir diupdate : 20 Februari 2020, 20:00</span>
+              <span class="sub-title" v-if="lastUpdate">Terakhir diupdate : {{$options.filters.indoDateTime(lastUpdate)}}</span>
             </el-col>
             
             <el-button 
@@ -59,7 +60,14 @@
               label="Nama Pasien"
               >
             </el-table-column>
-            
+            <el-table-column
+              label="Status"
+              width="100"
+              >
+              <template slot-scope="scope">
+                <el-tag effect="dark" :type='(scope.row.status >= 15)?"success":(scope.row.status == 0)?"danger":"warning"'>{{scope.row.status}}/15</el-tag>
+              </template>
+            </el-table-column>
             <el-table-column
               label="Aksi"
               width="150"
@@ -99,7 +107,7 @@
     },
     computed:{
       ...mapState(['errors','info']),
-      ...mapState('mutu',['data','page','perPage','totalData']),
+      ...mapState('mutu',['data','page','perPage','totalData','lastUpdate']),
       ...mapState('auth',['currentUser','isLoggedIn']),
     },
     watch:{
